@@ -3,31 +3,30 @@ name: Release
 on:
   push:
     tags:
-      - 'v*'
+      - '*' # 任意のタグがプッシュされたときに起動
 
 permissions:
-  contents: write
+  contents: write # Releasesを作成するために必要な権限
 
 jobs:
   goreleaser:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 0 # Changelog生成のため履歴をすべて取得
 
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version-file: 'go.mod'
-          cache: true
+          go-version: 'stable'
 
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v6
         with:
           distribution: goreleaser
-          version: '~> v2'
+          version: latest
           args: release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
