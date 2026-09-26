@@ -29,6 +29,12 @@ func printOllamaError(baseURL, model string, err error) {
 	fmt.Fprintln(os.Stderr, "   export OLLAMA_HOST=\"http://localhost:11434\"")
 }
 
+var (
+	version = "dev"
+	commit  = "none"
+	date    = "unknown"
+)
+
 var modernTools = map[string]string{
 	"rg":  "ripgrep (高速文字列検索)",
 	"fd":  "fd-find (高速ファイル検索)",
@@ -74,9 +80,12 @@ func getModel() string {
 }
 
 func printUsage() {
-	fmt.Println("Usage: askcmd <要望>")
+	fmt.Println("Usage: askcmd [オプション] <要望>")
 	fmt.Println()
 	fmt.Println("自然言語で実行したい処理を渡すと、最適なCLIコマンドとオプション解説を提示します。")
+	fmt.Println()
+	fmt.Println("オプション:")
+	fmt.Println("  -v, --version  バージョン情報を表示")
 	fmt.Println()
 	fmt.Println("例:")
 	fmt.Println("  askcmd \"特定の拡張子を除外して中身を検索したい\"")
@@ -277,6 +286,11 @@ func main() {
 	if len(os.Args) < 2 {
 		printUsage()
 		os.Exit(0)
+	}
+
+	if os.Args[1] == "-v" || os.Args[1] == "--version" || os.Args[1] == "version" {
+		fmt.Printf("askcmd %s (commit: %s, date: %s)\n", version, commit, date)
+		return
 	}
 
 	query := strings.Join(os.Args[1:], " ")

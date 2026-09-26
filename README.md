@@ -93,21 +93,30 @@ UbuntuローカルにOllamaを導入している場合は、追加のネット�
 
 ---
 
-### Step 3: `askcmd` のビルドとインストール
+### Step 3: `askcmd` のインストール
 
-1. **ソースコードの配置とビルド**:
-   ```bash
-   cd /home/iwata2401003/develop/askcmd  # プロジェクトディレクトリ
-   go build -o ~/.local/bin/askcmd main.go
-   ```
+#### 方法A: GitHub Releases からバイナリをダウンロード（推奨）
+[GitHub Releases](https://github.com/gantake11/askcmd/releases) からお使いのOS・アーキテクチャ（Linux / macOS / Windows、amd64 / arm64）に応じたアーカイブをダウンロードして展開し、実行可能パス（例: `~/.local/bin`）に配置します。
 
-2. **PATHの確認**:
-   `~/.local/bin` にPATHが通っていることを確認します。
-   ```bash
-   which askcmd
-   # 出力例: /home/<user>/.local/bin/askcmd
-   ```
-   ※ PATHが通っていない場合は、`export PATH="$HOME/.local/bin:$PATH"` を `~/.bashrc` に追加して `source ~/.bashrc` を実行してください。
+```bash
+# 例: Linux (x86_64 / amd64) の場合
+curl -sL https://github.com/gantake11/askcmd/releases/latest/download/askcmd_Linux_x86_64.tar.gz | tar -xz askcmd
+mv askcmd ~/.local/bin/
+```
+
+#### 方法B: ソースコードからビルド
+```bash
+go build -o ~/.local/bin/askcmd main.go
+```
+
+**PATHの確認**:
+`~/.local/bin` にPATHが通っていることを確認します。
+```bash
+which askcmd
+# 出力例: /home/<user>/.local/bin/askcmd
+askcmd --version
+```
+※ PATHが通っていない場合は、`export PATH="$HOME/.local/bin:$PATH"` を `~/.bashrc` に追加して `source ~/.bashrc` を実行してください。
 
 ---
 
@@ -211,6 +220,8 @@ askcmd "ポート8080を使っているプロセスを調べたい"
 | `main.go` | アプリケーション本体 | CLI引数の解析、Ollama APIとの通信、最適ツール判定（Step 1）、ローカルの `--help` 情報取得（Step 2）、ストリーミング生成出力（Step 3）など、ツールの全メインロジックが実装されています。 |
 | `main_test.go` | 単体テスト | `httptest` を利用したモックサーバーによるツール判定・ストリーミング処理のテストや、環境変数 `OLLAMA_HOST` のURL正規化ロジックに対する単体テストです。 |
 | `go.mod` | モジュール定義 | モジュール名 `askcmd` とGoバージョン（`go 1.22.2`）を定義しています。外部パッケージへの依存はありません。 |
+| `.goreleaser.yaml` | リリース設定 | GoReleaser v2 のクロスコンパイル（Linux/macOS/Windows）、アーカイブ圧縮、チェックサム生成の設定です。 |
+| `.github/workflows/release.yml` | CI/CDワークフロー | `v*` タグのプッシュをトリガーに全OS向けバイナリを自動ビルド・リリース公開するGitHub Actions定義です。 |
 | `README.md` | プロジェクトドキュメント | 本ツールの特徴、セットアップ手順、使い方、環境変数設定、トラブルシューティング、ファイル構成などをまとめたドキュメントです。 |
 
 ---

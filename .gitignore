@@ -1,0 +1,6 @@
+# Binaries
+askcmd
+askcmd.exe
+
+# GoReleaser output
+dist/
