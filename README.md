@@ -28,7 +28,38 @@ Ubuntu環境で稼働するローカルLLM（[Ollama](https://ollama.com/)）を
 
 ## 🚀 セットアップ手順
 
-### Step 1: Ubuntu側へのOllama導入（推奨）
+### Step 1: Go言語のインストール
+
+Goが未導入の場合は、以下のいずれかの方法でインストールします（Go 1.22 以上が必要です）。
+
+#### 方法A: aptパッケージマネージャーを使用（簡単・推奨）
+Ubuntu 24.04等のモダンな環境では標準リポジトリからGo 1.22以上がインストール可能です。
+```bash
+sudo apt update
+sudo apt install -y golang-go
+```
+
+#### 方法B: 公式バイナリを使用（最新版を導入したい場合）
+公式アーカイブを取得して `/usr/local` に展開します。
+```bash
+# バイナリのダウンロードと展開
+wget https://go.dev/dl/go1.22.2.linux-amd64.tar.gz
+sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.22.2.linux-amd64.tar.gz
+
+# PATHの設定（~/.bashrc に追加）
+echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+source ~/.bashrc
+```
+
+**バージョンの確認**:
+```bash
+go version
+# 出力例: go version go1.22.2 linux/amd64
+```
+
+---
+
+### Step 2: Ubuntu側へのOllama導入（推奨）
 
 UbuntuローカルにOllamaを導入している場合は、追加のネットワーク設定は不要です。
 
@@ -62,7 +93,7 @@ UbuntuローカルにOllamaを導入している場合は、追加のネット�
 
 ---
 
-### Step 2: `askcmd` のビルドとインストール
+### Step 3: `askcmd` のビルドとインストール
 
 1. **ソースコードの配置とビルド**:
    ```bash
