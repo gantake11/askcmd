@@ -22,7 +22,7 @@ Ubuntu環境で稼働するローカルLLM（[Ollama](https://ollama.com/)）を
 | :--- | :--- |
 | **Ubuntu / Linux (WSL含む)** | Go 1.22 以上、`~/.local/bin` へのPATH設定 |
 | **Ollama** | ローカル稼働中（デフォルト: `http://localhost:11434`） |
-| **推奨モデル** | `qwen2.5-coder:7b` (変更可能) |
+| **推奨モデル** | `qwen2.5-coder:7b`(デフォルト)もしくは`qwen2.5-coder:3b` (変更可能) |
 
 ---
 
